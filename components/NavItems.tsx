@@ -28,7 +28,7 @@ const NavItems = () => {
             key={i}
             className={`${
               isActive
-                ? "font-semibold flex justify-center items-center text-[16px] leading-[24px] whitespace-nowrap "
+                ? "font-semibold flex justify-center items-center text-[16px] leading-[24px] whitespace-nowrap text-lg transition duration-300"
                 : ""
             }`}
           >
