@@ -18,9 +18,10 @@ import Dropdown from "@/components/Dropdown";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import FileUpload from "@/components/FileUpload";
-import { IoLocationOutline } from "react-icons/io5";
-import { IoCalendarClear } from "react-icons/io5";
+import { IoLocationOutline, IoCalendarClear } from "react-icons/io5";
+import { FaRupeeSign } from "react-icons/fa";
 import { DatePicker } from "@/components/ui/date-picker";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface EventFormProps {
   userId: string;
@@ -186,6 +187,52 @@ const EventForm = ({ type, userId }: EventFormProps) => {
                     <DatePicker
                       date={field.value}
                       setDate={(date) => field.onChange(date)}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className="flex items-center h-[55px] w-full overflow-hidden rounded-full bg-gray-50 px-4 py-2">
+                    <FaRupeeSign size={24} />
+                    <Input
+                      type="number"
+                      placeholder="Price"
+                      className="border-0 text-[16px] font-normal leading-[24px] bg-gray-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      {...field}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="isFree"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <div className="flex items-center">
+                              <label
+                                htmlFor="isFree"
+                                className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                              >
+                                Free Ticket
+                              </label>
+                              <Checkbox
+                                id="isFree"
+                                className="mr-2 h-5 w-5 border-2 border-gray-500"
+                              />
+                            </div>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
                 </FormControl>
