@@ -20,8 +20,10 @@ import { useState } from "react";
 import FileUpload from "@/components/FileUpload";
 import { IoLocationOutline, IoCalendarClear } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
+import { FaLink } from "react-icons/fa6";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Checkbox } from "@/components/ui/checkbox";
+import Spinner from "@/components/Spinner";
 
 interface EventFormProps {
   userId: string;
@@ -240,9 +242,35 @@ const EventForm = ({ type, userId }: EventFormProps) => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="url"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className="flex justify-center items-center h-[55px] w-full overflow-hidden rounded-full bg-gray-50 px-4 py-2">
+                    <FaLink size={24} />
+                    <Input
+                      placeholder="URL"
+                      className="bg-gray-50 h-[54px] focus-visible:ring-offset-0 placeholder:text-grey-500 rounded-full p-regular-16 px-4 py-3 border-none focus-visible:ring-transparent"
+                      {...field}
+                    />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
 
-        <Button type="submit">Submit</Button>
+        <Button
+          type="submit"
+          size={"lg"}
+          disabled={form.formState.isSubmitting}
+          className="rounded-full h-[54px] text-[16px] font-normal leading-[24px] col-span-2 w-full"
+        >
+          {form.formState.isSubmitting ? <Spinner /> : type + " Event"}
+        </Button>
       </form>
     </Form>
   );
