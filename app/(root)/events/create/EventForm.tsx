@@ -7,16 +7,17 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { eventFormSchema } from "@/lib/validation";
 import Dropdown from "@/components/Dropdown";
+import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
+import FileUpload from "@/components/FileUpload";
 
 interface EventFormProps {
   userId: string;
@@ -24,6 +25,7 @@ interface EventFormProps {
 }
 
 const EventForm = ({ type, userId }: EventFormProps) => {
+  const [files, setFiles] = useState<File[]>([]);
   const eventDefaultValues = {
     title: "",
     description: "",
@@ -79,6 +81,40 @@ const EventForm = ({ type, userId }: EventFormProps) => {
                   <Dropdown
                     onChangeHandler={field.onChange}
                     value={field.value}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="flex flex-col gap-5 md:flex-row">
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="">
+                  <Textarea
+                    placeholder="Event Description"
+                    {...field}
+                    className="bg-gray-50 h-72 rounded-2xl flex flex-1 placeholder:text-grey-500 p-regular-16 focus-visible:ring-offset-0 placeholder:text-grey-500 px-4 py-3 border-none focus-visible:ring-transparent"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="imageUrl"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl className="">
+                  <FileUpload
+                    onFieldChange={field.onChange}
+                    imageUrl={field.value}
+                    setFiles={setFiles}
                   />
                 </FormControl>
                 <FormMessage />
