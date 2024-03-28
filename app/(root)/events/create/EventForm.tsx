@@ -26,32 +26,43 @@ import { DatePicker } from "@/components/ui/date-picker";
 import { Checkbox } from "@/components/ui/checkbox";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/navigation";
-import { createEvent } from "@/actions/event";
+import { createEvent, updateEvent } from "@/actions/event";
+import { IEvent } from "@/lib/db/models/eventModel";
 
 interface EventFormProps {
   userId: string;
   type: "Create" | "Update";
+  event?: IEvent;
+  eventId?: string;
 }
 
-const EventForm = ({ type, userId }: EventFormProps) => {
+const EventForm = ({ type, userId, event, eventId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
 
   const router = useRouter();
 
   const { startUpload } = useUploadThing("imageUploader");
 
-  const eventDefaultValues = {
-    title: "",
-    description: "",
-    location: "",
-    imageUrl: "",
-    startDateTime: new Date(),
-    endDateTime: new Date(),
-    categoryId: "",
-    price: "",
-    isFree: false,
-    url: "",
-  };
+  const eventDefaultValues =
+    event && type === "Update"
+      ? {
+          ...event,
+          startDateTime: new Date(event.startDateTime),
+          endDateTime: new Date(event.endDateTime),
+          imageUrl: event.imageUrl,
+        }
+      : {
+          title: "",
+          description: "",
+          location: "",
+          imageUrl: "",
+          startDateTime: new Date(),
+          endDateTime: new Date(),
+          categoryId: "",
+          price: "",
+          isFree: false,
+          url: "",
+        };
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
@@ -69,25 +80,48 @@ const EventForm = ({ type, userId }: EventFormProps) => {
       }
 
       uploadedImageUrl = uploadedImages[0].url;
+    }
+    if (type === "Create") {
+      try {
+        const newEvent = await createEvent({
+          event: {
+            ...values,
+            imageUrl: uploadedImageUrl,
+          },
+          userId,
+          path: "/profile",
+        });
 
-      if (type === "Create") {
-        try {
-          const newEvent = await createEvent({
-            event: {
-              ...values,
-              imageUrl: uploadedImageUrl,
-            },
-            userId,
-            path: "/profile",
-          });
-
-          if (newEvent) {
-            form.reset();
-            router.push(`/events/${newEvent._id}`);
-          }
-        } catch (error) {
-          console.log(error);
+        if (newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent._id}`);
         }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    if (type === "Update") {
+      if (!eventId) {
+        router.back();
+        return;
+      }
+      try {
+        const updatedEvent = await updateEvent({
+          userId,
+          event: {
+            ...values,
+            imageUrl: uploadedImageUrl,
+            _id: eventId,
+          },
+          path: `/events/${eventId}`,
+        });
+
+        if (updatedEvent) {
+          form.reset();
+          router.push(`/events/${updatedEvent._id}`);
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   }
@@ -246,6 +280,7 @@ const EventForm = ({ type, userId }: EventFormProps) => {
                     <Input
                       type="number"
                       placeholder="Price"
+                      disabled={!!form.getValues("isFree")}
                       className="border-0 text-[16px] font-normal leading-[24px] bg-gray-50 outline-offset-0 focus:border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                       {...field}
                     />
