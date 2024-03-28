@@ -18,12 +18,15 @@ import Dropdown from "@/components/Dropdown";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import FileUpload from "@/components/FileUpload";
+import { useUploadThing } from "@/lib/uploadthing";
 import { IoLocationOutline, IoCalendarClear } from "react-icons/io5";
 import { FaRupeeSign } from "react-icons/fa";
 import { FaLink } from "react-icons/fa6";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Checkbox } from "@/components/ui/checkbox";
 import Spinner from "@/components/Spinner";
+import { useRouter } from "next/navigation";
+import { createEvent } from "@/actions/event";
 
 interface EventFormProps {
   userId: string;
@@ -32,6 +35,11 @@ interface EventFormProps {
 
 const EventForm = ({ type, userId }: EventFormProps) => {
   const [files, setFiles] = useState<File[]>([]);
+
+  const router = useRouter();
+
+  const { startUpload } = useUploadThing("imageUploader");
+
   const eventDefaultValues = {
     title: "",
     description: "",
@@ -50,10 +58,38 @@ const EventForm = ({ type, userId }: EventFormProps) => {
     defaultValues: eventDefaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof eventFormSchema>) {
-    // Do something with the form values.
-    // console.log(values);
-    console.log(JSON.stringify(values));
+  async function onSubmit(values: z.infer<typeof eventFormSchema>) {
+    const eventData = values;
+    let uploadedImageUrl = values.imageUrl;
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files);
+
+      if (!uploadedImages) {
+        return;
+      }
+
+      uploadedImageUrl = uploadedImages[0].url;
+
+      if (type === "Create") {
+        try {
+          const newEvent = await createEvent({
+            event: {
+              ...values,
+              imageUrl: uploadedImageUrl,
+            },
+            userId,
+            path: "/profile",
+          });
+
+          if (newEvent) {
+            form.reset();
+            router.push(`/events/${newEvent._id}`);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
   }
 
   return (
@@ -227,6 +263,8 @@ const EventForm = ({ type, userId }: EventFormProps) => {
                                 Free Ticket
                               </label>
                               <Checkbox
+                                onCheckedChange={field.onChange}
+                                checked={field.value}
                                 id="isFree"
                                 className="mr-2 h-5 w-5 border-2 border-gray-500"
                               />
