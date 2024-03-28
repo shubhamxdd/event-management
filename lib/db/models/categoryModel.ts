@@ -13,7 +13,7 @@ const categorySchema = new mongoose.Schema({
   },
 });
 
-const category =
+const Category =
   mongoose.models.Category || mongoose.model("Category", categorySchema);
 
-export default category;
+export default Category;
