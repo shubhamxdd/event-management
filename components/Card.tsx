@@ -45,7 +45,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
             <span className="text-[14px] font-semibold rounded-full bg-blue-500/10 px-4 py-1 text-blue-700">
               {event.isFree ? "Free" : "₹ " + event.price}
             </span>
-            <p className="text-[14px] font-semibold rounded-full bg-purple-500/10 px-4 py-1 text-purple-700 capitalize">
+            <p className="text-[14px] font-semibold rounded-full line-clamp-1 bg-purple-500/10 px-4 py-1 text-purple-700 capitalize">
               {event.category.name}
             </p>
           </div>
