@@ -19,8 +19,9 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { ICategory } from "@/lib/db/models/categoryModel";
-import { startTransition, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { Input } from "./ui/input";
+import { createCategory, getCategories } from "@/actions/category";
 
 interface EventFormProps {
   value: string;
@@ -31,7 +32,19 @@ const Dropdown = ({ onChangeHandler, value }: EventFormProps) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [newCategory, setNewCategory] = useState("");
 
-  const handleAddCategory = () => {};
+  const handleAddCategory = () => {
+    createCategory({ categoryName: newCategory.trim() }).then((item) =>
+      setCategories((prev) => [...prev, item])
+    );
+  };
+
+  useEffect(() => {
+    const getAllCategories = async () => {
+      const categories = await getCategories();
+      categories && setCategories(categories as ICategory[]);
+    };
+    getAllCategories();
+  }, []);
 
   return (
     <Select onValueChange={onChangeHandler} defaultValue={value}>
@@ -51,7 +64,7 @@ const Dropdown = ({ onChangeHandler, value }: EventFormProps) => {
           ))}
         <AlertDialog>
           <AlertDialogTrigger className="text-[14px] font-bold leading-[20px] flex w-full rounded-sm py-3 pl-2 hover:bg-gray-100 ">
-            Open
+            New Category
           </AlertDialogTrigger>
           <AlertDialogContent className="bg-white">
             <AlertDialogHeader>
