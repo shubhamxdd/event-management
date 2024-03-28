@@ -1,5 +1,5 @@
 import React from "react";
-import EventForm from "../../EventForm";
+import EventForm from "../../create/EventForm";
 import { auth } from "@clerk/nextjs";
 
 const UpdateEvent = () => {
@@ -15,7 +15,7 @@ const UpdateEvent = () => {
         </h3>
       </section>
       <div className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8">
-        <EventForm userId={userId} type="Create" />
+        <EventForm userId={userId} type="Update" />
       </div>
     </>
   );

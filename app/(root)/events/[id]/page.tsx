@@ -29,7 +29,7 @@ const EventPage = async ({ params: { id } }: { params: { id: string } }) => {
             </h1>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <div className="flex gap-3">
-                <p className="font-bold text-[20px] leading-[30px] tracking-[2%] rounded-full bg-blue-500/10 px-5 py-2 text-blue-700">
+                <p className="font-medium text-[16px] leading-[30px] tracking-[2%] rounded-full bg-blue-500/10 px-5 py-2 text-blue-700">
                   {event.isFree ? "Free" : "₹ " + event.price}
                 </p>
                 <p className="text-[16px] font-medium leading-[24px] rounded-full bg-purple-900/10 px-4 py-2.5 text-purple-700 capitalize">
