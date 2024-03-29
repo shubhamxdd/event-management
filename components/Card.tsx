@@ -36,10 +36,7 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         </div>
       )}
 
-      <Link
-        href={`/events/${event._id}`}
-        className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4"
-      >
+      <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
         {!hidePrice && (
           <div className="flex gap-2">
             <span className="text-[14px] font-semibold rounded-full bg-blue-500/10 px-4 py-1 text-blue-700">
@@ -53,21 +50,26 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
         <p className="text-[16px] font-medium text-gray-500">
           {formatDateTime(event.startDateTime).dateOnly}
         </p>
-        <p className="text-[18px] font-medium line-clamp-2 flex-1 text-black">
-          {event.title}
-        </p>
+        <Link href={`/events/${event._id}`}>
+          <p className="text-[18px] font-medium line-clamp-1 flex-1 text-black">
+            {event.title}
+          </p>
+        </Link>
         <div className="flex justify-between items-center w-full">
           <p className="text-[12px] md:text-[14px] font-medium text-gray-600">
             {event.host.firstName} {event.host.lastName}
           </p>
           {hasOrderLink && (
-            <Link href={`/orders?eventId=${event._id}`} className="flex gap-2">
+            <Link
+              href={`/orders?eventId=${event._id}`}
+              className="flex gap-2 items-center"
+            >
               <p className="text-gray-500">Order Details</p>
-              <IoArrowForward size={16} />
+              <IoArrowForward size={20} />
             </Link>
           )}
         </div>
-      </Link>
+      </div>
     </div>
   );
 };
