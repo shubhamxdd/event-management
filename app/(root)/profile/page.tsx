@@ -5,15 +5,19 @@ import { Button } from "@/components/ui/button";
 import { IOrder } from "@/lib/db/models/orderModel";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
+import { SearchParamProps } from "../events/[id]/page";
 
-const ProfilePage = async () => {
+const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
 
   const userId = sessionClaims?.userId as string;
 
-  const hostedEvents = await getEventsByUser({ userId, page: 1 });
+  const ordersPage = Number(searchParams?.ordersPage) || 1;
+  const eventsPage = Number(searchParams?.eventsPage) || 1;
 
-  const orders = await getOrdersByUser({ userId, page: 1 });
+  const hostedEvents = await getEventsByUser({ userId, page: eventsPage });
+
+  const orders = await getOrdersByUser({ userId, page: ordersPage });
 
   const orderedEvents = orders?.data.map((order: IOrder) => order.event || []);
 
@@ -37,8 +41,8 @@ const ProfilePage = async () => {
           emptyDescription="Kharid le bhai"
           collectionType="My_Tickets"
           limit={3}
-          page={1}
-          totalPages={2}
+          page={ordersPage}
+          totalPages={orders?.totalPages}
           urlParamName="ordersPage"
         />
       </section>
@@ -61,8 +65,8 @@ const ProfilePage = async () => {
           emptyDescription="Bana le bhai"
           collectionType="Events_Organized"
           limit={6}
-          page={1}
-          totalPages={2}
+          page={eventsPage}
+          totalPages={hostedEvents?.totalPages}
           urlParamName="eventsPage"
         />
       </section>

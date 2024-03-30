@@ -1,7 +1,8 @@
 import Events from "./Events";
+import { SearchParamProps } from "./events/[id]/page";
 import Hero from "./Hero";
 
-export default function Home() {
+export default function Home({ searchParams }: SearchParamProps) {
   return (
     <>
       <section className="bg-gray-50 bg-dotted-pattern bg-contain py-5 md:py10">
@@ -11,7 +12,7 @@ export default function Home() {
         id="events"
         className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8 flex flex-col gap-8 md:gap-12"
       >
-        <Events />
+        <Events searchParams={searchParams} />
       </section>
     </>
   );

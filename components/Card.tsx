@@ -62,10 +62,13 @@ const Card = ({ event, hasOrderLink, hidePrice }: CardProps) => {
           {hasOrderLink && (
             <Link
               href={`/orders?eventId=${event._id}`}
-              className="flex gap-2 items-center"
+              className="flex gap-2 items-center text-blue-500/70 hover:text-blue-500 transition-all"
             >
               <p className="text-gray-500">Order Details</p>
-              <IoArrowForward size={20} />
+              <IoArrowForward
+                size={20}
+                className="transition-transform duration-300 hover:translate-x-2"
+              />
             </Link>
           )}
         </div>

@@ -1,11 +1,16 @@
 import { getAllEvents } from "@/actions/event";
 import Collection from "@/components/Collection";
+import Search from "@/components/Search";
 
-const Events = async () => {
+const Events = async ({ searchParams }: any) => {
+  const page = Number(searchParams?.page) || 1;
+  const searchText = (searchParams?.query as string) || "";
+  const category = (searchParams?.category as string) || "";
+
   const events = await getAllEvents({
-    query: "",
-    category: "",
-    page: 1,
+    query: searchText,
+    category,
+    page,
     limit: 6,
   });
 
@@ -15,7 +20,7 @@ const Events = async () => {
         Popular events <br /> In your area
       </h2>
       <div className="flex w-full flex-col gap-5 md:flex-row">
-        Search, category, filter TODO
+        <Search placeholder="Search" />
       </div>
       <Collection
         data={events?.data}
