@@ -12,7 +12,7 @@ const Events = async ({ searchParams }: any) => {
     query: searchText,
     category,
     page,
-    limit: 6,
+    limit: 12,
   });
 
   return (
@@ -30,8 +30,8 @@ const Events = async ({ searchParams }: any) => {
         emptyDescription="Try searching for events in a different location or category"
         collectionType="All_Events"
         limit={5}
-        page={1}
-        totalPages={2}
+        page={page}
+        totalPages={events?.totalPages}
       />
     </>
   );

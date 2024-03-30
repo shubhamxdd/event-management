@@ -99,9 +99,9 @@ const EventPage = async ({
           emptyTitle="No events found"
           emptyDescription="Try searching for events in a different location or category"
           collectionType="All_Events"
-          limit={5}
-          page={1}
-          totalPages={2}
+          limit={3}
+          page={searchParams.page as string}
+          totalPages={events?.totalPages}
         />
       </section>
     </>
