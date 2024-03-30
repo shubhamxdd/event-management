@@ -77,7 +77,7 @@ const EventPage = async ({
             </div>
             <div className="flex flex-col gap-3">
               <p className="font-bold text-[20px] leading-[30px] tracking-[2%] text-gray-600">
-                What you'll learn:
+                What is this about:
               </p>
               <p className="text-[16px] font-medium leading-[24px]">
                 {event.description}
