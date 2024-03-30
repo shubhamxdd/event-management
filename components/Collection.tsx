@@ -1,5 +1,6 @@
 import { IEvent } from "@/lib/db/models/eventModel";
 import Card from "./Card";
+import Pagination from "./Pagination";
 
 interface CollectionProps {
   data: IEvent[];
@@ -42,6 +43,13 @@ const Collection = ({
               );
             })}
           </ul>
+          {totalPages > 1 && (
+            <Pagination
+              urlParamName={urlParamName}
+              page={page}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       ) : (
         <div className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full flex justify-center items-center min-h-[200px] flex-col gap-3 rounded-[14px] bg-gray-50 py-28 text-center ">
