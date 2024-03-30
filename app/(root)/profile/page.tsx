@@ -1,6 +1,8 @@
 import { getEventsByUser } from "@/actions/event";
+import { getOrdersByUser } from "@/actions/order";
 import Collection from "@/components/Collection";
 import { Button } from "@/components/ui/button";
+import { IOrder } from "@/lib/db/models/orderModel";
 import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -10,6 +12,10 @@ const ProfilePage = async () => {
   const userId = sessionClaims?.userId as string;
 
   const hostedEvents = await getEventsByUser({ userId, page: 1 });
+
+  const orders = await getOrdersByUser({ userId, page: 1 });
+
+  const orderedEvents = orders?.data.map((order: IOrder) => order.event || []);
 
   return (
     <>
@@ -24,9 +30,9 @@ const ProfilePage = async () => {
         </div>
       </section>
 
-      {/* <section className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8">
+      <section className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8">
         <Collection
-          data={events?.data}
+          data={orderedEvents}
           emptyTitle="No tickets purchased yet"
           emptyDescription="Kharid le bhai"
           collectionType="My_Tickets"
@@ -35,7 +41,7 @@ const ProfilePage = async () => {
           totalPages={2}
           urlParamName="ordersPage"
         />
-      </section> */}
+      </section>
 
       <section className="bg-gray-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
         <div className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full flex justify-center items-center sm:justify-between">
@@ -48,7 +54,7 @@ const ProfilePage = async () => {
         </div>
       </section>
 
-       <section className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8">
+      <section className="max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full my-8">
         <Collection
           data={hostedEvents?.data}
           emptyTitle="No Events created yet"
