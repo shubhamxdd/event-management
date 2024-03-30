@@ -1,18 +1,21 @@
 import { getEvent, getRelatedEventsByCategory } from "@/actions/event";
-import { Button } from "@/components/ui/button";
 import { FaCalendarAlt } from "react-icons/fa";
 import Image from "next/image";
 import { formatDateTime } from "@/lib/utils";
 import { IoLocationOutline } from "react-icons/io5";
 import Link from "next/link";
 import Collection from "@/components/Collection";
+import CheckoutButton from "@/components/CheckoutButton";
 
 export type SearchParamProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-const EventPage = async ({params: { id }, searchParams}: SearchParamProps) => {
+const EventPage = async ({
+  params: { id },
+  searchParams,
+}: SearchParamProps) => {
   const event = await getEvent(id);
 
   const events = await getRelatedEventsByCategory({
@@ -51,6 +54,7 @@ const EventPage = async ({params: { id }, searchParams}: SearchParamProps) => {
                   by {event.host.firstName} {event.host.lastName}
                 </p>
               </div>
+              <CheckoutButton event={event} />
             </div>
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
@@ -61,7 +65,6 @@ const EventPage = async ({params: { id }, searchParams}: SearchParamProps) => {
                     {formatDateTime(event.endDateTime).dateOnly}
                   </p>
                 </div>
-                {/* <Button className="rounded-full px-5 py-1">Buy Tickets</Button> */}
               </div>
 
               <div className="flex items-center gap-3 text-[16px] font-medium leading-[24px] ">
