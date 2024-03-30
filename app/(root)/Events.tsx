@@ -1,4 +1,5 @@
 import { getAllEvents } from "@/actions/event";
+import CategoryFilter from "@/components/CategoryFilter";
 import Collection from "@/components/Collection";
 import Search from "@/components/Search";
 
@@ -21,6 +22,7 @@ const Events = async ({ searchParams }: any) => {
       </h2>
       <div className="flex w-full flex-col gap-5 md:flex-row">
         <Search placeholder="Search" />
+        <CategoryFilter />
       </div>
       <Collection
         data={events?.data}
