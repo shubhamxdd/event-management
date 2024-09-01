@@ -1,11 +1,11 @@
-import { BsCloudLightningRainFill } from "react-icons/bs";
+import { SiEventbrite } from "react-icons/si";
 
 const Logo = () => {
   return (
     <div>
       <div className="flex items-center font-semibold gap-1">
-        <BsCloudLightningRainFill size={40} />
-        <span>CookMyShow</span>
+        <SiEventbrite size={40} />
+        <span>ventory</span>
       </div>
     </div>
   );
